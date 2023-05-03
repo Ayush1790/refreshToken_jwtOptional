@@ -1,4 +1,5 @@
 <?php
+
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -11,6 +12,10 @@ use Phalcon\Session\Adapter\Stream;
 use Phalcon\Escaper;
 use handler\Listener\Listener;
 use Phalcon\Http\Response\Cookies;
+use assets\Locale;
+use Phalcon\Storage\SerializerFactory;
+use Phalcon\Cache\Adapter\Stream as StreamCache;
+
 
 $config = new Config([]);
 
@@ -32,13 +37,26 @@ $loader->registerNamespaces([
     "handler\Aware" => APP_PATH . "/handlers/",
     "handler\Events" => APP_PATH . "/handlers/",
     "controllers" => APP_PATH . "/controllers/",
-    "assets\heade"=>APP_PATH."/assets/"
+    'assets' => APP_PATH . '/assets/',
 ]);
 
 $loader->register();
 
 $container = new FactoryDefault();
+$container->set(
+    'cache',
+    function () {
+        $serializerFactory = new SerializerFactory();
 
+        $options = [
+            'defaultSerializer' => 'Json',
+            'lifetime'          => 7200,
+            'storageDir'        => APP_PATH . '/storage/cache',
+        ];
+        return new StreamCache($serializerFactory, $options);
+    }
+);
+$container->set('locale', (new Locale())->getTranslator());
 $container->set(
     'view',
     function () {
@@ -115,6 +133,7 @@ $container->set(
         return $cookies;
     }
 );
+
 
 $application = new Application($container);
 

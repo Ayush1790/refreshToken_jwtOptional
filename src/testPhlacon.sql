@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-server
--- Generation Time: Apr 28, 2023 at 01:09 PM
+-- Generation Time: May 02, 2023 at 09:13 AM
 -- Server version: 8.0.19
 -- PHP Version: 7.4.1
 
@@ -91,6 +91,34 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`title`, `price`, `stock`, `zipcode`, `id`) VALUES
 ('tag2', 1000, 1, 261141, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `pswd` varchar(50) NOT NULL,
+  `role` enum('user','guest','admin','') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `pswd`, `role`) VALUES
+(26, 'ayush', 'ayushgupta@cedcoss.com', '1', 'user'),
+(27, 'ayush', 'ayushgupta@cedcoss.com', '1', 'user'),
+(28, '1', 'ayushgupta@cedcoss.com', '1', 'user'),
+(29, '1', 'ayushgupta@cedcoss.com', '1', 'user'),
+(30, 'ayush', 'ayushgupta@cedcoss.com', '1', 'user'),
+(31, 'ayush', 'ayushgupta@cedcoss.com', '1', 'user'),
+(32, '1', '1', '1', 'user'),
+(33, '1', '1', '1', 'user');
+
 --
 -- Indexes for dumped tables
 --
@@ -108,6 +136,12 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -122,6 +156,12 @@ ALTER TABLE `products`
 --
 ALTER TABLE `settings`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
