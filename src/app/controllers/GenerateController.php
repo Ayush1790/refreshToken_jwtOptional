@@ -5,18 +5,16 @@ use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
 
 
-class LoginController extends Controller
+class GenerateController extends Controller
 {
     public function indexAction()
     {
         //redirect to view
     }
-    public function loginAction()
+    public function generateAction()
     {
-        $email = $this->request->getPost('email');
-        $pswd = $this->request->getPost('pswd');
-        $res = $this->mongo->findOne(['email'=>$email,'pswd'=>$pswd]);
-        if ($res->name) {
+        $role = $this->request->get('role');
+        $passphrase = $this->request->get('phrase');
             $signer  = new Hmac();
 
             // Builder object
@@ -26,7 +24,7 @@ class LoginController extends Controller
             $issued     = $now->getTimestamp();
             $notBefore  = $now->modify('-1 minute')->getTimestamp();
             $expires    = $now->modify('+1 day')->getTimestamp();
-            $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
+            $passphrase = $passphrase;
             // Setup
             $builder
                 ->setExpirationTime($expires)               // exp
@@ -34,18 +32,15 @@ class LoginController extends Controller
                 ->setIssuedAt($issued)                      // iat
                 ->setIssuer('https://phalcon.io')           // iss
                 ->setNotBefore($notBefore)                  // nbf
-                ->setSubject('user')                // sub
+                ->setSubject($role)                // sub
                 ->setPassphrase($passphrase)                // password
             ;
             // Phalcon\Security\JWT\Token\Token object
             $tokenObject = $builder->getToken();
             // The token
             $token = $tokenObject->getToken();
-            $this->session->set('token', $token);
-            print_r($this->session->get('token'));
-        }
-        else{
-            $this->response->redirect('login');
-        }
+            print_r($token);
+            echo "<br><br><a href='/decode'>decode token</a>";
+            die;
     }
 }

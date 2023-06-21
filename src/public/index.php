@@ -43,20 +43,7 @@ $loader->registerNamespaces([
 $loader->register();
 
 $container = new FactoryDefault();
-$container->set(
-    'cache',
-    function () {
-        $serializerFactory = new SerializerFactory();
 
-        $options = [
-            'defaultSerializer' => 'Json',
-            'lifetime'          => 7200,
-            'storageDir'        => APP_PATH . '/storage/cache',
-        ];
-        return new StreamCache($serializerFactory, $options);
-    }
-);
-$container->set('locale', (new Locale())->getTranslator());
 $container->set(
     'view',
     function () {
@@ -122,14 +109,6 @@ $container->set(
 
 $application = new Application($container);
 
-$eventsManager = $container->get('eventsManager');
-
-$eventsManager->attach(
-    'application:beforeHandleRequest',
-    new Listener()
-);
-$container->set('EventsManager', $eventsManager);
-$application->setEventsManager($eventsManager);
 try {
     // Handle the request
     $response = $application->handle(
