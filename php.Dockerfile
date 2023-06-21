@@ -1,9 +1,13 @@
 FROM php:7.4.3-apache
-
+ARG XDEBUG_VERSION="xdebug-2.9.2"
 ARG PSR_VERSION=0.7.0
 ARG PHALCON_VERSION=4.1.1
 ARG PHALCON_EXT_PATH=php7/64bits
+RUN apt-get update
+RUN apt-get install -y libcurl4-openssl-dev ssh nano pkg-config libssl-dev
+RUN pecl install mongodb xdebug-2.9.2 && docker-php-ext-enable mongodb xdebug
 RUN docker-php-ext-install mysqli pdo pdo_mysql
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN set -xe && \
     # Download PSR, see https://github.com/jbboehr/php-psr
     curl -LO https://github.com/jbboehr/php-psr/archive/v${PSR_VERSION}.tar.gz && \

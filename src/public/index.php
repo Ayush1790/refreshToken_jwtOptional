@@ -16,12 +16,12 @@ use assets\Locale;
 use Phalcon\Storage\SerializerFactory;
 use Phalcon\Cache\Adapter\Stream as StreamCache;
 
-
 $config = new Config([]);
 
 // Define some absolute path constants to aid in locating resources
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
+require_once BASE_PATH . '/vendor/autoload.php';
 
 // Register an autoloader
 $loader = new Loader();
@@ -82,27 +82,12 @@ $container->set(
     }
 );
 
-
-$container->set(
-    'db',
-    function () {
-        return new Mysql(
-            [
-                'host'     => 'mysql-server',
-                'username' => 'root',
-                'password' => 'secret',
-                'dbname'   => 'testPhlacon',
-            ]
-        );
-    }
-);
-
 $container->set(
     'mongo',
     function () {
-        $mongo = new MongoClient();
-
-        return $mongo->selectDB('phalt');
+        $mongo = new MongoDB\Client('mongodb+srv://myAtlasDBUser:myatlas-001@myatlas' .
+            'clusteredu.aocinmp.mongodb.net/?retryWrites=true&w=majority');
+        return $mongo->products_2->user;
     },
     true
 );
