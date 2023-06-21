@@ -38,6 +38,8 @@ $loader->registerNamespaces([
     "handler\Events" => APP_PATH . "/handlers/",
     "controllers" => APP_PATH . "/controllers/",
     'assets' => APP_PATH . '/assets/',
+    'App\Controllers'=>APP_PATH.'/controllers/',
+
 ]);
 
 $loader->register();

@@ -1,5 +1,6 @@
 <?php
 
+
 use Phalcon\Mvc\Controller;
 use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
@@ -13,7 +14,8 @@ class DecodeController extends Controller
         //redirect to view
     }
 
-    public function decodeAction(){
+    public function decodeAction()
+    {
         $token = $this->request->get('token');
         $parser = new Parser();
         $tokenObject = $parser->parse($token);
@@ -22,6 +24,7 @@ class DecodeController extends Controller
         $validator = new Validator($tokenObject, 100);
         $validator->validateExpiration($expirs);
         $claims = $tokenObject->getClaims()->getPayload();
-        print_r($claims['sub']);die;
+        print_r($claims['sub']);
+        die;
     }
 }
